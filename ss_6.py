@@ -4,14 +4,12 @@
 #####By PH 11.2017############
 ##############################
 '''
-from copy import deepcopy
 import fnmatch
 import itertools
 import time
 
 SIZE = 6
 #Sample clues
-CLUES = [6, 4, 2, 2, 2, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 6]
 current_pos = 0
 
 #init board with zeros, but you can overwrite with custom
@@ -66,7 +64,7 @@ def make_empty_field_list(input_board):
                 empty_filed_list.append([irow, icol])
     return empty_filed_list
 
-def is_valid(position=current_pos, ss_board=board, ss_clues=CLUES):
+def is_valid(ss_clues, position=current_pos, ss_board=board):
     '''will return information if certain field don't colid with valid solution
     '''
     row = str(ss_clues[SIZE*4 - 1 - position[0]])+"".join([str(x) for x in ss_board[position[0]]]) \
@@ -90,27 +88,25 @@ def current_field_val():
     return board[fields_to_fill[current_pos][0]][fields_to_fill[current_pos][1]]
 
 def set_current_field_val(set_value):
-    board[fields_to_fill[current_pos][0]] [fields_to_fill[current_pos][1]]=set_value
+    board[fields_to_fill[current_pos][0]][fields_to_fill[current_pos][1]] = set_value
 
-def is_current_field_valid():
-    return is_valid(fields_to_fill[current_pos])
+def is_current_field_valid(clues):
+    return is_valid(position=fields_to_fill[current_pos], ss_clues=clues)
 
 fields_to_fill = make_empty_field_list(board)
 current_pos = 0
 
-def solve_puzzle (clues):
+def solve_puzzle(clues):
     ''' Input for function is a list of clues
         size of this list shoud be 4*SIZE
     '''
-    global CLUES
     global current_pos
-    CLUES = deepcopy(clues)
     solved = False
 
     while not solved:
         if current_field_val() < SIZE:
             set_current_field_val(current_field_val() + 1)
-            if is_current_field_valid():
+            if is_current_field_valid(clues):
                 current_pos = current_pos +1
                 if current_pos == len(fields_to_fill):
                     solved = True
@@ -120,9 +116,14 @@ def solve_puzzle (clues):
         else:
             set_current_field_val(0)
             current_pos = current_pos - 1
-
     print (board)
     return board
+
+#Example
+CLUES = [6, 4, 2, 2, 2, 1, 1, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 6]
+
+CLUES = (0, 3, 0, 5, 3, 4, 0, 0, 0, 0, 0, 1, 0, 3, 0, 3, 2, 3, 3, 2, 0, 3, 1, 0)
+
 
 start_time = time.time()
 solve_puzzle(CLUES)
