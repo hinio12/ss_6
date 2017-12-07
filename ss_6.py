@@ -9,7 +9,6 @@ import itertools
 import time
 
 SIZE = 6
-#Sample clues
 current_pos = 0
 
 #init board with zeros, but you can overwrite with custom
@@ -52,7 +51,7 @@ DATABASE = list(itertools.permutations(range(1, SIZE+1)))
 DATABASE_STR = [convert_list_into_string(x) for x in DATABASE]
 
 def make_empty_field_list(input_board):
-    '''basing on given input, function will creat list
+    '''basing on given input, function will create list
     of fileds that need to be filed in order to have solution
     >>> make_empty_field_list([[1, 3, 5, 0, 6, 4],[0, 5, 4, 0, 2, 6],[0, 3, 0, 0, 0, 5],[0, 3, 0, 0, 0, 2],[1, 5, 0, 0, 0, 2], [5, 3, 4, 0, 6, 2]])[:3]
     [[0, 3], [1, 0], [1, 3]]
@@ -65,7 +64,7 @@ def make_empty_field_list(input_board):
     return empty_filed_list
 
 def is_valid(ss_clues, position=current_pos, ss_board=board):
-    '''will return information if certain field don't colid with valid solution
+    '''will return True if certain field don't colid with valid solution
     '''
     row = str(ss_clues[SIZE*4 - 1 - position[0]])+"".join([str(x) for x in ss_board[position[0]]]) \
         + str(ss_clues[position[0]+SIZE])
@@ -98,7 +97,7 @@ current_pos = 0
 
 def solve_puzzle(clues):
     ''' Input for function is a list of clues
-        size of this list shoud be 4*SIZE
+        size of this list should be 4*SIZE
     '''
     global current_pos
     solved = False
